@@ -7,7 +7,11 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.create!(order_params)
+    @order = Order.create #order_params returns an unpermitted parameter error for :order
+    dishes = params[:order]
+    dishes.each do |dish|
+      @order.dishes.create(name: dish[:name], price: dish[:price])
+    end
     render json: @order
   end
 
@@ -27,9 +31,9 @@ class Api::V1::OrdersController < ApplicationController
 
   private
 
-  def order_params
-    params.require(:order).permit(:dishes, :user_id)
-  end
+  #def order_params
+    #params.require(:order).permit(:user_id, [{:dishes => [:id, :name, :price, :description, :category]}])
+  #end
 
   def set_order
     @order = Order.find(params[:id])
