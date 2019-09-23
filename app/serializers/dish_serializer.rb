@@ -1,4 +1,4 @@
 class DishSerializer < ActiveModel::Serializer
-  attributes :name, :price, :description
+  attributes :id, :name, :price, :description
   belongs_to :category
 end
